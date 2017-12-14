@@ -41,7 +41,8 @@ export class CreateTaskComponent {
     form.append('image', this.image);
     this._tasksService.createTask(form);
     $('#myModal').modal('hide');
-    $('#myModa').find('form')[0].reset();
+    $('#myModal').find('form')[0].reset();
+    this.image = undefined;
   }
 
 
