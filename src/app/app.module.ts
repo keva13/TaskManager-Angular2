@@ -14,8 +14,6 @@ import { CreateTaskComponent } from './create-task/create-task.component';
 
 import { TasksService } from './_services/tasks.service';
 
-import { ToastrModule } from 'ngx-toastr';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,12 +25,7 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserModule,
     HttpModule,
     FormsModule,
-    AppRoutingModule,
-    ToastrModule.forRoot({
-      timeOut: 3000,
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: true,
-    }),
+    AppRoutingModule
   ],
   providers: [
     AppConfig,

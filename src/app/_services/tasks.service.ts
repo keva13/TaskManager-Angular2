@@ -1,10 +1,10 @@
-import {Host, Injectable, SkipSelf, ViewContainerRef} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { AppConfig } from '../app.config';
 import { Subject } from 'rxjs/Subject';
-import { ToastrService } from 'ngx-toastr';
 declare const jQuery: any;
+declare const toastr: any;
 
 @Injectable()
 export class TasksService {
@@ -17,9 +17,13 @@ export class TasksService {
   public onChangeTask = new Subject();
 
   constructor(private http: Http,
-              public toastr: ToastrService,
               private config: AppConfig) {
     this.getTasks();
+    toastr.options = {
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    };
   }
 
   createTask(data): Promise<any> {
@@ -35,7 +39,7 @@ export class TasksService {
           this.getTasks();
         } else {
           for (let key in result.message) {
-            this.toastr.error('This is not good!', result.message[key]);
+            toastr.error('This is not good!', result.message[key]);
           }
         }
 
@@ -65,7 +69,7 @@ export class TasksService {
           this.onChangeTask.next(this.tasks);
         } else {
           for (let key in result.message) {
-            this.toastr.error('This is not good!', result.message[key]);
+            toastr.error('This is not good!', result.message[key]);
           }
         }
 
