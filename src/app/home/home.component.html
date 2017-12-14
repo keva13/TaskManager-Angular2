@@ -1,0 +1,71 @@
+<div class="header">
+  <div class="sort">
+    <div class="sortby" (click)="sortBy('id')">
+      Create date <span [class]="(_tasksService.sort_field === 'id' ? 'glyphicon glyphicon-sort-by-attributes' : '') + (_tasksService.sort_direction === 'asc' ? '' : '-alt')"></span>
+    </div>
+    <div class="sortby" (click)="sortBy('username')">
+      User name <span [class]="(_tasksService.sort_field === 'username' ? 'glyphicon glyphicon-sort-by-attributes' : '') + (_tasksService.sort_direction === 'asc' ? '' : '-alt')"></span>
+    </div>
+    <div class="sortby" (click)="sortBy('status')">
+      Status <span [class]="(_tasksService.sort_field === 'status' ? 'glyphicon glyphicon-sort-by-attributes' : '') + (_tasksService.sort_direction === 'asc' ? '' : '-alt')"></span>
+    </div>
+    <div class="sortby" (click)="sortBy('email')">
+      Email <span [class]="(_tasksService.sort_field === 'email' ? 'glyphicon glyphicon-sort-by-attributes' : '') + (_tasksService.sort_direction === 'asc' ? '' : '-alt')"></span>
+    </div>
+  </div>
+  <app-create-task></app-create-task>
+</div>
+<ul class="pagination">
+  <li *ngFor="let number of _tasksService.totalPage" (click)="selectPage(number)"><a href="#">{{number}}</a></li>
+</ul>
+<div class="list">
+  <div class="task" *ngFor="let task of tasks; let i = index">
+    <div class="my-row">
+      <div class="userName">
+        <label>Username:</label>
+        <div class="name">{{task.username}}</div>
+      </div>
+      <div class="mini-description">
+        <label>Description:</label>
+        <div class="description">{{task.text}}</div>
+      </div>
+    </div>
+    <div class="my-row">
+      <div class="userEmail">
+        <label>Email:</label>
+        <div class="name">{{task.email}}</div>
+      </div>
+      <div class="showMore">
+        <button class="btn btn-primary btn-sm collapsed" type="button" data-toggle="collapse" [attr.data-target]="'#collapseExample' + i" aria-expanded="false" aria-controls="collapseExample">
+          <span class="show-ctrl">
+                Show more
+            </span>
+          <span class="hide-ctrl">
+                Hide more
+            </span>
+        </button>
+      </div>
+    </div>
+    <div class="my-row">
+      <div class="taskState">
+        <label>Status:</label>
+        <span>{{task.status === 0 ? 'Open' : 'Close'}}</span>
+        <!--<select (change)="changeStatus($event, task)" class="form-control" name="" id="">-->
+          <!--<option [selected]="task.status === 0" value="0">Open</option>-->
+          <!--<option [selected]="task.status === 10" value="10">Close</option>-->
+        <!--</select>-->
+      </div>
+    </div>
+    <div class="collapse details" [id]="'collapseExample' + i">
+        <div class="description">
+          <label>Description</label>
+          <div>
+            {{task.text}}
+          </div>
+        </div>
+        <div class="image">
+          <img [src]="task.image_path" alt="">
+        </div>
+      </div>
+  </div>
+</div>
