@@ -1,6 +1,6 @@
 import {Component, Injectable} from '@angular/core';
 import {TasksService} from '../_services/tasks.service';
-import {Md5} from 'ts-md5/dist/md5';
+import {LoginService} from '../_services/login.service';
 declare const jQuery: any;
 
 @Component({
@@ -14,11 +14,20 @@ export class HomeComponent {
 
   public tasks: any;
 
-  constructor(public _tasksService: TasksService) {
+  constructor(public _loginService: LoginService, public _tasksService: TasksService) {
     this.tasks = this._tasksService.tasks;
 
     this._tasksService.onChangeTask.subscribe((tasks) => {
       this.tasks = tasks;
+    })
+  }
+
+  changeText(e, task) {
+    task.text = e.target.value;
+
+    this._tasksService.editTasks(task, {
+      status: task.status,
+      text: task.text,
     })
   }
 
@@ -33,23 +42,20 @@ export class HomeComponent {
   }
 
   changeStatus(e, task) {
-
     task.status = e.target.value;
-    const signatureData = {
+
+    this._tasksService.editTasks(task, {
       status: task.status,
       text: task.text,
-      token: 'beejee',
-    };
-
-    const signature = Md5.hashStr(jQuery.param( signatureData ));
-    this._tasksService.editTasks(task, {
-      signature: signature,
-      status: task.status
     })
   }
 
   selectPage(number) {
     this._tasksService.page = number;
     this._tasksService.getTasks();
+  }
+
+  clearStorage() {
+    localStorage.clear();
   }
 }

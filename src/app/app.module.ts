@@ -10,14 +10,17 @@ import { HttpModule } from '@angular/http';
 import { AppConfig } from './app.config';
 
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
 import { CreateTaskComponent } from './create-task/create-task.component';
 
 import { TasksService } from './_services/tasks.service';
+import { LoginService } from './_services/login.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    LoginComponent,
     CreateTaskComponent
   ],
   imports: [
@@ -29,6 +32,7 @@ import { TasksService } from './_services/tasks.service';
   ],
   providers: [
     AppConfig,
+    LoginService,
     TasksService
   ],
   bootstrap: [AppComponent]

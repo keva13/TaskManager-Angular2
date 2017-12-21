@@ -49,18 +49,21 @@
     <div class="my-row">
       <div class="taskState">
         <label>Status:</label>
-        <span>{{task.status === 0 ? 'Open' : 'Close'}}</span>
-        <!--<select (change)="changeStatus($event, task)" class="form-control" name="" id="">-->
-          <!--<option [selected]="task.status === 0" value="0">Open</option>-->
-          <!--<option [selected]="task.status === 10" value="10">Close</option>-->
-        <!--</select>-->
+        <span *ngIf="!_loginService.authorized">{{task.status === 0 ? 'Open' : 'Close'}}</span>
+        <select *ngIf="_loginService.authorized" (change)="changeStatus($event, task)" class="form-control" name="" id="">
+          <option [selected]="task.status === 0" value="0">Open</option>
+          <option [selected]="task.status === 10" value="10">Close</option>
+        </select>
       </div>
     </div>
     <div class="collapse details" [id]="'collapseExample' + i">
         <div class="description">
           <label>Description</label>
-          <div>
+          <div *ngIf="!_loginService.authorized">
             {{task.text}}
+          </div>
+          <div *ngIf="_loginService.authorized">
+            <textarea rows="5" class="form-control" (change)="changeText($event, task)">{{task.text}}</textarea>
           </div>
         </div>
         <div class="image">
@@ -69,3 +72,7 @@
       </div>
   </div>
 </div>
+<footer>
+  <a  *ngIf="!_loginService.authorized" href="login">Login</a>
+  <a  *ngIf="_loginService.authorized" (click)="clearStorage()" href="/">Logout</a>
+</footer>

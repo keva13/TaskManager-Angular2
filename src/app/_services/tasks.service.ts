@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { AppConfig } from '../app.config';
 import { Subject } from 'rxjs/Subject';
+import {Md5} from 'ts-md5/dist/md5';
 declare const jQuery: any;
 declare const toastr: any;
 
@@ -78,13 +79,25 @@ export class TasksService {
       .catch(err => err);
   }
 
-  editTasks(id, data): Promise<any> {
-    const url = `${this.config.apiUrl}edit/${id}?developer=${this.developer}}`;
+  editTasks(task, data): Promise<any> {
+    const url = `${this.config.apiUrl}edit/${task.id}?developer=${this.developer}`;
 
-    const headers = new Headers({ 'Authorization': 'beejee ' + data.signature });
-    const options = new RequestOptions({ headers: headers });
+    const signatureData = {
+      status: task.status,
+      text: task.text,
+      token: 'beejee',
+    };
 
-    return this.http.post(url, data, options)
+    const signature = Md5.hashStr(jQuery.param( signatureData ));
+    data.signature = signature;
+    data.token = 'beejee';
+
+    const form = new FormData();
+    form.append('signature', data.signature);
+    form.append('status', data.status);
+    form.append('text', data.text);
+    form.append('token', data.token);
+    return this.http.post(url, form)
       .toPromise()
       .then(response => {
         const result = response.json();
